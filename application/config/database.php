@@ -73,12 +73,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// 'hostname' => 'localhost',
+// 'username' => 'u576943536_root',
+// 'password' => 'M~D5U&M0i',
+// 'database' => 'u576943536_jsontogpi',
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => '',
+	'database' => 'innovator_bize',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
