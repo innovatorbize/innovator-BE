@@ -29,5 +29,6 @@ class Welcome extends CI_Controller {
 		$this->loader->loadModels();
 
 		echo $this->app_users->test();
+
 	}
 }

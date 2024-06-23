@@ -21,4 +21,9 @@ class Load_model extends CI_Model {
         }
     }
 
+    public function sendresponse($data)
+    {
+        print_r(json_encode($data));
+    }
+
 }
