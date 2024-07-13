@@ -48,6 +48,25 @@ class App_users_model extends CI_Model {
         {
             return $user_data;
         }
+        else
+        {
+            return '';
+        }
+    }
+
+    public function checkUser()
+    {
+        $getAuthUser = $this->authenticate();
+        $checkEmail = $this->app_users->getUserData('email', $getAuthUser->email);
+
+        if(isset($checkEmail->email))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
    
     public function saveAppUsers($userData) 
@@ -108,23 +127,6 @@ class App_users_model extends CI_Model {
                  ->set_content_type('application/json')
                  ->set_status_header(401)
                  ->set_output(json_encode(array('error' => 'Unauthorized')));
-            return false;
-        }
-
-    }
-
-    public function checkUser()
-    {
-        $getAuthUser = $this->authenticate();
-
-        $checkEmail = $this->app_users->getUserData('email', $getAuthUser->email);
-
-        if(isset($checkEmail->email))
-        {
-            return true;
-        }
-        else
-        {
             return false;
         }
     }

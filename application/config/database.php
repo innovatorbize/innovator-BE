@@ -73,9 +73,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-// 'hostname' => 'localhost',
+
+// 'dsn'	=> '',
+// 'hostname' => 'https://animecloths.com/',
 // 'username' => 'u576943536_root',
-// 'password' => 'M~D5U&M0i',
+// 'password' => 'Rl;8KFRtq',
 // 'database' => 'u576943536_jsontogpi',
 
 $db['default'] = array(
