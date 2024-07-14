@@ -1,10 +1,4 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Max-Age: 3600");
 
 class Auth extends CI_Controller {
 
@@ -61,8 +55,7 @@ class Auth extends CI_Controller {
 
     public function login()
     {
-        // $loginData = (object)$this->input->post();
-        // $loginData = json_decode(file_get_contents('php://input'), true);
+        $loginData = json_decode(file_get_contents('php://input'), true);
 
         $loginData = array(
             'password' => 'kojo',
@@ -71,8 +64,6 @@ class Auth extends CI_Controller {
         );
 
         $loginData =(object)$loginData;
-
-        // var_dump($loginData);
 
         if($loginData)
         {
@@ -89,6 +80,14 @@ class Auth extends CI_Controller {
                 );
                 $jwt = $jwt->encode($token, $this->key, 'HS256');
             }
+            else
+            {
+                $jwt = '';
+            }
+        }
+        else
+        {
+            $jwt = '';
         }
 
         if($checkUser)

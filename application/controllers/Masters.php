@@ -1,10 +1,4 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Max-Age: 3600");
 
 class Masters extends CI_Controller {
 
@@ -21,25 +15,40 @@ class Masters extends CI_Controller {
 
 	public function savetests()
 	{
-        $userData = json_decode(file_get_contents('php://input'), true);
-        $userData = (object)$userData;
-        $id = isset($userData->id) ? $userData->id : null;
-        if(!isset($id))
+        if($this->app_users->authenticate())
         {
-            $id = $this->tests->saveTests($userData);
+            $userData = json_decode(file_get_contents('php://input'), true);
+            $userData = (object)$userData;
+            $id = isset($userData->id) ? $userData->id : null;
+            if(!isset($id))
+            {
+                $id = $this->tests->saveTests($userData);
+            }
+            else
+            {
+                $id = $this->tests->updateTests($userData);
+            }
+            $this->loader->sendresponse($id);
         }
         else
         {
-            $id = $this->tests->updateTests($userData);
+
+            $this->loader->sendresponse();
         }
-        $this->loader->sendresponse($id);
 	}
 
     public function testsList()
 	{
-        $getData =(object)$this->input->get();
-        $data = $this->db->query("select * from tests;")->result();
-        $this->loader->sendresponse($data);
+        if($this->app_users->authenticate())
+        {
+            $getData =(object)$this->input->get();
+            $data = $this->db->query("select * from tests;")->result();
+            $this->loader->sendresponse($data);
+        }
+        else
+        {
+            $this->loader->sendresponse();
+        }
     }
 
     public function editTests()

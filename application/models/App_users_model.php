@@ -31,7 +31,8 @@ class App_users_model extends CI_Model {
     public function checkUserData($type = '', $filter)
     {
         $user_data = $this->db->get_where($this->table, array($type => $filter))->row_array();
-        if(sizeof($user_data) > 0)
+        
+        if($user_data && sizeof($user_data) > 0)
         {
             return true;
         }
@@ -39,6 +40,7 @@ class App_users_model extends CI_Model {
         {
             return false;
         }
+       
     }
 
     public function getUserData($type = '', $filter)
@@ -88,14 +90,21 @@ class App_users_model extends CI_Model {
         $userData = $this->getUserData('email', $login_email);
         $check_email = $this->checkUserData('email', $login_email);
 
-        $salt = $userData->salt;
-        $password = $userData->hpassword;
-
-        $login_hpassword = $this->hash_password($login_password, $salt);
-
-        if($check_email && $login_hpassword === $password)
+        if($userData !== '')
         {
-            return true;
+            $salt = $userData->salt;
+            $password = $userData->hpassword;
+    
+            $login_hpassword = $this->hash_password($login_password, $salt);
+    
+            if($check_email && $login_hpassword === $password)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -106,11 +115,9 @@ class App_users_model extends CI_Model {
 
     public function authenticate() {
         $headers = $this->input->request_headers();
-        $headers['Authorization'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6InByZW1AZW1haWwuZGV2IiwiZXhwIjoxNzE5MDI3NTkyfQ.O6R4rEtMtoM7tx6nHzL5HFPkQgP_6J0yvBbvPn403bc';
-            
-        if (isset($headers['Authorization'])) {
-            // $token = str_replace('Bearer ', '', $headers['Authorization']);
-            $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6InByZW1AZW1haWwuZGV2IiwiZXhwIjoxNzE5MDI3NTkyfQ.O6R4rEtMtoM7tx6nHzL5HFPkQgP_6J0yvBbvPn403bc';
+        if (isset($headers['Authorization'])) 
+        {
+            $token = str_replace('Bearer ', '', $headers['Authorization']);
             $jwt = new JWT();
             try {
                 $decoded = $jwt->decode($token, $this->key, true);
@@ -122,7 +129,8 @@ class App_users_model extends CI_Model {
                      ->set_output(json_encode(array('error' => 'Unauthorized')));
                 return false;
             }
-        } else {
+        }
+        else {
             $this->output
                  ->set_content_type('application/json')
                  ->set_status_header(401)
