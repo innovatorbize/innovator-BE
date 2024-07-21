@@ -20,7 +20,7 @@ class Welcome extends CI_Controller {
         $query = $this->db->get('daily_facts');
         $data = $query->result();
         // $this->loader->sendresponse($data);
-		print_r(json_decode($data));
+		print_r(json_encode($data));
 
         // return $data;
     }
