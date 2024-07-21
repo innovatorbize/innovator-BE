@@ -10,7 +10,7 @@ class Welcome extends CI_Controller {
     public function getDailyfacts() {
         $query = $this->db->get('daily_facts');
         $data = $query->result();
-        return $query;
+        return $data;
     }
 
 	public function checkDbConnection()
