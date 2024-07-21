@@ -82,8 +82,8 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'https://animecloths.com/',
-	'username' => 'root',
+	'hostname' => 'localhost',
+	'username' => 'u576943536_innovationbize',
 	'password' => '12345@Abc@Cde',
 	'database' => 'u576943536_innovationbize',
 	// 'dsn'	=> '',
