@@ -19,7 +19,8 @@ class Welcome extends CI_Controller {
     public function getDailyfacts() {
         $query = $this->db->get('daily_facts');
         $data = $query->result();
-        $this->loader->sendresponse($data);
+        // $this->loader->sendresponse($data);
+		print_r(json_decode($data));
 
         // return $data;
     }
