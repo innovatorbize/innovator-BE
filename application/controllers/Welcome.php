@@ -2,6 +2,15 @@
 
 class Welcome extends CI_Controller {
 
+	public function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
+        $this->load->model('Load_model', 'loader');
+		$this->loader->loadModels();
+
+    }
+
 	public function index()
 	{
 		echo 'r';
@@ -10,7 +19,9 @@ class Welcome extends CI_Controller {
     public function getDailyfacts() {
         $query = $this->db->get('daily_facts');
         $data = $query->result();
-        return $data;
+        $this->loader->sendresponse($data);
+
+        // return $data;
     }
 
 	public function checkDbConnection()
