@@ -53,17 +53,31 @@ class Masters extends CI_Controller {
 
     public function editTests()
 	{
-        $id = json_decode(file_get_contents('php://input'), true);
-        // $getData =(object)$this->input->get();
-        $data = $this->db->query("select * from tests where id = $id;")->row_array();
-        $this->loader->sendresponse($data);
+        if($this->app_users->authenticate())
+        {
+            $id = json_decode(file_get_contents('php://input'), true);
+            // $getData =(object)$this->input->get();
+            $data = $this->db->query("select * from tests where id = $id;")->row_array();
+            $this->loader->sendresponse($data);
+        }
+        else
+        {
+            $this->loader->sendresponse();
+        }
     }
 
     public function deleteTests()
 	{
-        $id = json_decode(file_get_contents('php://input'), true);
-        $data = $this->tests->deleteTests($id);
-        $this->loader->sendresponse($data);
+        if($this->app_users->authenticate())
+        {
+            $id = json_decode(file_get_contents('php://input'), true);
+            $data = $this->tests->deleteTests($id);
+            $this->loader->sendresponse($data);
+        }
+        else
+        {
+            $this->loader->sendresponse();
+        }
     }
 
     public function updateformData($data, $id) {

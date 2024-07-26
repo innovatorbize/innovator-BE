@@ -13,6 +13,7 @@ class Load_model extends CI_Model {
 
         $models = [
             'app_users',
+            'app_users_device',
             'app_logs',
             'tests'
         ];

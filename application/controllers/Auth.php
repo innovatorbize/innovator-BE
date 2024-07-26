@@ -9,9 +9,37 @@ class Auth extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('Load_model', 'loader');
-        $this->load->model('app_logs_model', 'app_logs');
 		$this->loader->loadModels();
         $this->load->helper('jwt_helper');
+
+    }
+
+    public function checkingUserEmail()
+    {
+        $getData = json_decode(file_get_contents('php://input'), true);
+
+        $userData = new stdClass;
+
+        $userData = (object)$getData;
+
+        $oldUserData = new stdClass;
+
+        $filterType = 'email';
+
+        $oldUserData = $this->app_users->getUserData($filterType, $userData->email);
+
+        if($oldUserData->email !== $userData->email)
+        {
+            $response['status'] = 'New Mail log';
+            $response['log'] = true;
+        }
+        else
+        {
+            $response['status'] = 'Email Already Exist';
+            $response['log'] = false;
+        }
+
+        $this->loader->sendresponse($response);
 
     }
 
@@ -57,11 +85,11 @@ class Auth extends CI_Controller {
     {
         $loginData = json_decode(file_get_contents('php://input'), true);
 
-        $loginData = array(
-            'password' => 'kojo',
-            'email' => 'prem@email.dev',
-            'phone_no' => '8908978900'
-        );
+        // $loginData = array(
+        //     'password' => 'kojo',
+        //     'email' => 'prem@email.dev',
+        //     'phone_no' => '8908978900'
+        // );
 
         $loginData =(object)$loginData;
 
