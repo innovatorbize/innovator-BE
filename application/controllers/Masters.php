@@ -80,6 +80,74 @@ class Masters extends CI_Controller {
         }
     }
 
+	public function savedailyfacttests()
+	{
+        if($this->app_users->authenticate())
+        {
+            $userData = json_decode(file_get_contents('php://input'), true);
+            $userData = (object)$userData;
+            $id = isset($userData->id) ? $userData->id : null;
+            if(!isset($id))
+            {
+                $id = $this->daily_facts->saveDailyFacts($userData);
+            }
+            else
+            {
+                $id = $this->daily_facts->updateDailyFacts($userData);
+            }
+            $this->loader->sendresponse($id);
+        }
+        else
+        {
+
+            $this->loader->sendresponse();
+        }
+	}
+
+    public function dailyfactList()
+	{
+        if($this->app_users->authenticate())
+        {
+            $getData =(object)$this->input->get();
+            $data = $this->db->query("select * from daily_facts;")->result();
+            $this->loader->sendresponse($data);
+        }
+        else
+        {
+            $this->loader->sendresponse();
+        }
+    }
+
+    public function editdailyfact()
+	{
+        if($this->app_users->authenticate())
+        {
+            $id = json_decode(file_get_contents('php://input'), true);
+            // $getData =(object)$this->input->get();
+            $data = $this->db->query("select * from daily_facts where id = $id;")->row_array();
+            $this->loader->sendresponse($data);
+        }
+        else
+        {
+            $this->loader->sendresponse();
+        }
+    }
+
+    public function deletedailyfact()
+	{
+        if($this->app_users->authenticate())
+        {
+            $id = json_decode(file_get_contents('php://input'), true);
+            $data = $this->daily_facts->deleteDailyFacts($id);
+            $this->loader->sendresponse($data);
+        }
+        else
+        {
+            $this->loader->sendresponse();
+        }
+    }
+
+
     public function updateformData($data, $id) {
         $this->db->where('id', $id);
         $this->db->update('public_issues', $data);
@@ -91,7 +159,6 @@ class Masters extends CI_Controller {
         $data = $query->result();
         return $query;
     }
-
 
 	public function checkLoadModels()
 	{

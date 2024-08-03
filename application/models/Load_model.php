@@ -15,7 +15,8 @@ class Load_model extends CI_Model {
             'app_users',
             'app_users_device',
             'app_logs',
-            'tests'
+            'tests',
+            'daily_facts'
         ];
 
         foreach($models as $m)
